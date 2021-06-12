@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -6,7 +8,23 @@
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>test-systemds</name>
-  <url>http://maven.apache.org</url>
+  <!-- <url>http://maven.apache.org</url> -->
+
+  <!-- 
+    maven.apache.org/guides/mini/guide-multiple-repositories.html -->
+  <repositories>
+    <!-- <repository>
+      <id>central</id>
+      <name>Maven Central Repo</name>
+      <url>https://repo1.maven.org/</url>
+    </repository> -->
+    <repository>
+      <id>nexus-staging</id>
+      <name>Nexus OSS Staging repo</name>
+      <url>https://repository.apache.org/content/groups/staging/</url>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -14,5 +32,10 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.systemds</groupId>
+      <artifactId>systemds</artifactId>
+      <version>2.1.0</version>
+   </dependency>
   </dependencies>
 </project>
