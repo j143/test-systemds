@@ -65,3 +65,6 @@ public class App
 
 
 ```
+
+---
+Apache, Apache SystemDS are the trademarks of The Apache Software Foundation.
