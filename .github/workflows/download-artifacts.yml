@@ -1,0 +1,78 @@
+name: Download and test release artifacts
+
+# Controls when the action will run. 
+on:
+  push:
+    branches: main
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  RELEASE_TAG: '2.2.1-rc1'
+  RELEASE_VERSION: '2.2.1'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - name: Build with Maven
+        run: mvn -B package --file test-systemds/pom.xml
+      
+      - name: Download artifacts
+        run: |
+          wget -r -np -nH --cut-dirs=5 -R index.html https://dist.apache.org/repos/dist/dev/systemds/${RELEASE_TAG}/ -e robots=off
+          
+      - name: Test systemds-$RELEASE_VERSION-src.zip
+        run: |
+          unzip systemds-$RELEASE_VERSION-src.zip
+          cd systemds-$RELEASE_VERSION-src
+          mvn clean package -P distribution
+          mvn -ntp test -DenableGPU=true -Dmaven.test.skip=false -Dtest-parallel=suites -Dtest-threadCount=1 -Dtest-forkCount=1 -D automatedtestbase.outputbuffering=false -Dtest=org.apache.sysds.test.component.codegen.**
+        
+#       systemds-*-src.tgz
+#       systemds-*-bin.zip
+#       systemds-*-bin.tgz
+      
+      
+#       # Runs a single command using the runners shell
+#       # https://github.com/docker/cli/blob/master/experimental/README.md
+#       # About daemon https://docs.docker.com/engine/reference/commandline/dockerd/
+#       - name: Enable docker experimental features
+#         run: |
+#           jq '.experimental=true' /etc/docker/daemon.json > daemon.json
+#           sudo mv daemon.json /etc/docker/daemon.json
+#           sudo systemctl restart docker
+#           docker version -f '{{.Server.Experimental}}'
+      
+#       # https://docs.docker.com/engine/reference/builder/
+#       - name: Build docker image
+#         run: |
+#           docker build --squash -t texlive -f _action/Dockerfile .
+      
+#       # as per https://www.maths.tcd.ie/~dwilkins/LaTeXPrimer/ProduceInput.html
+#       # Note: texliveonfly downloads missing package during compilation.
+#       - name: Test
+#         run: |
+#           docker run --rm texlive pdflatex --version
+#           cat <<EOF >test.tex
+#           \documentclass[a4paper,12pt]{article}
+#           \begin{document}
+#           test
+#           \end{document}
+#           EOF
+#           docker run --rm -v $(pwd):/data -w /data texlive texliveonfly test.tex
+#           find test.pdf | grep -q 'PDF'
+      
