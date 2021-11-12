@@ -22,10 +22,10 @@ jobs:
         include:
           - os: macos-latest
             java: '8'
-            javadist: 'adopt'
+            javadist: 'temurin'
           - os: ubuntu-latest
             java: '8'
-            javadist: 'temurin'
+            javadist: 'adopt'
     steps:
     - uses: actions/checkout@v2
     
