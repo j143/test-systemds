@@ -35,25 +35,25 @@ jobs:
           
       - name: Test systemds-$RELEASE_VERSION-src.zip
         run: |
-          unzip systemds-$RELEASE_VERSION-src.zip
+          unzip -q systemds-$RELEASE_VERSION-src.zip
           cd systemds-$RELEASE_VERSION-src
-          mvn clean package -P distribution
+          mvn -ntp clean package -P distribution
           mvn -ntp test -DenableGPU=true -Dmaven.test.skip=false -Dtest-parallel=suites -Dtest-threadCount=1 -Dtest-forkCount=1 -D automatedtestbase.outputbuffering=false -Dtest=org.apache.sysds.test.component.codegen.**
           cd ..
           rm -rf systemds-$RELEASE_VERSION-src
       
       - name: Test systemds-$RELEASE_VERSION-src.tgz
         run: |
-          tar -xvf systemds-$RELEASE_VERSION-src.tgz
+          tar -xzf systemds-$RELEASE_VERSION-src.tgz
           cd systemds-$RELEASE_VERSION-src
-          mvn clean package -P distribution
+          mvn -ntp clean package -P distribution
           mvn -ntp test -DenableGPU=true -Dmaven.test.skip=false -Dtest-parallel=suites -Dtest-threadCount=1 -Dtest-forkCount=1 -D automatedtestbase.outputbuffering=false -Dtest=org.apache.sysds.test.component.codegen.**
           cd ..
           rm -rf systemds-$RELEASE_VERSION-src
       
       - name: Test systemds-$RELEASE_VERSION-bin.zip
         run: |
-          unzip systemds-$RELEASE_VERSION-bin.zip
+          unzip -q systemds-$RELEASE_VERSION-bin.zip
           cd systemds-$RELEASE_VERSION-bin
           cat <<EOF >hello.dml
           print('Hello from SystemDS!')
@@ -64,7 +64,7 @@ jobs:
           
       - name: Test systemds-$RELEASE_VERSION-bin.tgz
         run: |
-          tar -xvf systemds-$RELEASE_VERSION-bin.tgz
+          tar -xzf systemds-$RELEASE_VERSION-bin.tgz
           cd systemds-$RELEASE_VERSION-bin
           cat <<EOF >hello.dml
           print('Hello from SystemDS!')
