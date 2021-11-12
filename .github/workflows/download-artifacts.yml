@@ -63,8 +63,6 @@ jobs:
           cd ..
           rm -rf systemds-$RELEASE_VERSION-bin
       
-      - name:
-      
 #       # Runs a single command using the runners shell
 #       # https://github.com/docker/cli/blob/master/experimental/README.md
 #       # About daemon https://docs.docker.com/engine/reference/commandline/dockerd/
