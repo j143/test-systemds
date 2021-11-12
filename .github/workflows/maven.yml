@@ -25,7 +25,7 @@ jobs:
             javadist: 'temurin'
           - os: ubuntu-latest
             java: '8'
-            javadist: 'adopt'
+            javadist: 'adopt-openj9'
     steps:
     - uses: actions/checkout@v2
     
