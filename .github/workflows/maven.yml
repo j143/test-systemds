@@ -25,14 +25,10 @@ jobs:
             javadist: 'adopt'
           - os: ubuntu-latest
             java: '8'
-            javadist: 'adopt'
+            javadist: 'temurin'
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 8
-      uses: actions/setup-java@v2
-      with:
-        java-version: '8'
-        distribution: 'adopt'
+    
     - name: Build with Maven
       run: mvn -B package --file test-systemds/pom.xml
       
