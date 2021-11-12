@@ -21,7 +21,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-18.04]
-        java: ['8']
+        include:
+          - os: macos-latest
+            java: '8'
+            javadist: 'temurin'
+          - os: ubuntu-latest
+            java: '8'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
