@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-18.04]
+        os: [macos-latest, ubuntu-latest]
         include:
           - os: macos-latest
             java: '8'
