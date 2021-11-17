@@ -16,22 +16,33 @@ jobs:
   # This workflow contains a single job called "build"
   dist_apache_org-artifacts:
     # The type of runner that the job will run on
+    name: ${{ matrix.os }} Java ${{ matrix.java }} ${{ matrix.javadist }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-18.04]
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+        os: [
+          ubuntu-latest, 
+          # macOS-latest, 
+          # windows-latest
+          ]
+        java: '8'
+        javadist: [
+          # 'adopt',
+          'adopt-openj9',
+          # 'zulu',
+          # 'temurin'
+          ]
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      
-      - name: Set up JDK 8
-        uses: actions/setup-java@v2
-        with:
-          java-version: '8'
-          distribution: 'adopt'
-      
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup Java ${{ matrix.java }} ${{ matrix.javadist }}
+      uses: actions/setup-java@v2
+      with:
+        distribution: ${{ matrix.javadist }}
+        java-version: ${{ matrix.java }}
+
       - name: Download artifacts from dist.apache.org
         run: |
           wget -r -np -nH --cut-dirs=5 -R index.html https://dist.apache.org/repos/dist/dev/systemds/${RELEASE_TAG}/ -e robots=off

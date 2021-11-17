@@ -14,20 +14,33 @@ on:
 
 jobs:
   build:
-
+    name: ${{ matrix.os }} Java ${{ matrix.java }} ${{ matrix.javadist }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest]
-        include:
-          - os: macos-latest
-            java: '8'
-            javadist: 'temurin'
-          - os: ubuntu-latest
-            java: '8'
+        os: [
+          ubuntu-latest, 
+          # macOS-latest, 
+          # windows-latest
+          ]
+        java: '8'
+        javadist: [
+          # 'adopt',
+          'adopt-openj9',
+          # 'zulu',
+          # 'temurin'
+          ]
     steps:
-    - uses: actions/checkout@v2
-    
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup Java ${{ matrix.java }} ${{ matrix.javadist }}
+      uses: actions/setup-java@v2
+      with:
+        distribution: ${{ matrix.javadist }}
+        java-version: ${{ matrix.java }}
+       
     - name: Build with Maven
       run: mvn -B package --file test-systemds/pom.xml
       
