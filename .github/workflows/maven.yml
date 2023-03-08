@@ -9,8 +9,8 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
-  schedule:
-  - cron: "0 2 1 * *"
+#   schedule:
+#   - cron: "0 2 1 * *"
 
 jobs:
   build:
@@ -19,18 +19,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [
-          ubuntu-latest, 
-          # macOS-latest, 
-          # windows-latest
-          ]
-        java: '8'
-        javadist: [
-          # 'adopt',
-          'adopt-openj9',
-          # 'zulu',
-          # 'temurin'
-          ]
+        os: [ubuntu-latest]
+        java: [11]
+        javadist: ['adopt-openj11']
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
