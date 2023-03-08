@@ -35,7 +35,7 @@
     <dependency>
       <groupId>org.apache.systemds</groupId>
       <artifactId>systemds</artifactId>
-      <version>2.2.1</version>
+      <version>3.1.0</version>
    </dependency>
   </dependencies>
 </project>
